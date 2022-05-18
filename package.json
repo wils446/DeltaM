@@ -1,18 +1,22 @@
 {
-  "name": "DeltaM",
-  "version": "1.0.0",
-  "main": "dist/main.js",
-  "repository": "https://github.com/wils446/DeltaM",
-  "license": "MIT",
-  "dependencies": {
-    "discord.js": "^13.7.0",
-    "dotenv": "^16.0.1",
-    "tsc-watch": "^5.0.3",
-    "typescript": "^4.6.4"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.25.0",
-    "@typescript-eslint/parser": "^5.25.0",
-    "eslint": "^8.15.0"
-  }
+	"name": "DeltaM",
+	"version": "1.0.0",
+	"main": "dist/main.js",
+	"scripts": {
+		"dev": "tsc-watch --onSuccess \"node .\""
+	},
+	"repository": "https://github.com/wils446/DeltaM",
+	"license": "MIT",
+	"dependencies": {
+		"discord.js": "^13.7.0",
+		"dotenv": "^16.0.1",
+		"tsc-watch": "^5.0.3",
+		"typescript": "^4.6.4"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.25.0",
+		"@typescript-eslint/parser": "^5.25.0",
+		"discord-music-player": "^8.3.2",
+		"eslint": "^8.15.0"
+	}
 }
