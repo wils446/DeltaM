@@ -1,6 +1,7 @@
 import { Player, PlayerOptions, Queue as DefaultQueue, Song, Utils } from "discord-music-player";
 import { Client as Youtube, VideoCompact } from "youtubei";
 import { Guild, TextBasedChannel } from "discord.js";
+import { getEmbedMessage } from "../utils/Utils";
 
 class Queue extends DefaultQueue {
 	autoplay = false;
@@ -34,7 +35,8 @@ class Queue extends DefaultQueue {
 			if (this.lastPlayedSongs.length > 5) this.lastPlayedSongs.shift();
 		}
 
-		this.channel.send(`${song.name} has been added to the queue.`);
+		const msg = `Now playing: **${song.name}**`;
+		this.channel.send({ embeds: [getEmbedMessage(msg)] });
 	}
 
 	private async autoPlay(): Promise<Song> {

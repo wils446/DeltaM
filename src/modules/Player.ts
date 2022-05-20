@@ -9,7 +9,10 @@ class Player extends DefaultPlayer {
 		super(client, options);
 	}
 
-	createQueue(guildId: Snowflake, options: PlayerOptions & { channel?: TextBasedChannel } = this.options): Queue {
+	createQueue(
+		guildId: Snowflake,
+		options: PlayerOptions & { channel?: TextBasedChannel } = this.options
+	): Queue {
 		options = Object.assign({} as PlayerOptions, this.options, options);
 
 		const guild = this.client.guilds.resolve(guildId);
