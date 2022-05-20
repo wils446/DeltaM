@@ -1,9 +1,10 @@
 {
 	"name": "DeltaM",
 	"version": "1.0.0",
-	"main": "dist/main.js",
+	"main": "dist/src/main.js",
 	"scripts": {
-		"dev": "tsc-watch --onSuccess \"node .\""
+		"dev": "tsc-watch --onSuccess \"node .\"",
+		"create-command": "node ./scripts/create-command.js"
 	},
 	"repository": "https://github.com/wils446/DeltaM",
 	"license": "MIT",
