@@ -34,7 +34,10 @@ for (const folder of commandFolders) {
 	client.commands.push(command);
 }
 
-client.once("ready", () => console.log("Ready!!"));
+client.once("ready", () => {
+	client.user?.setActivity("to the moon", { type: "LISTENING" });
+	console.log("Ready!!");
+});
 
 client.on("messageCreate", async (message) => {
 	if (!message.content.startsWith(PREFIX) || message.author.bot) return;
