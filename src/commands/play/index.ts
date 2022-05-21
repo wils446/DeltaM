@@ -6,6 +6,7 @@ import { getEmbedFromSong, getEmbedMessage } from "../../utils/Utils";
 const command: Command = {
 	name: "play",
 	description: "Play a Song",
+	aliases: ["p"],
 	async execute(message, args) {
 		if (!message.member?.voice.channel || !message.guild) return;
 

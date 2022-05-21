@@ -4,6 +4,7 @@ import { getEmbedMessage } from "../../utils/Utils";
 const command: Command = {
 	name: "remove",
 	description: "Remove a song from queue",
+	aliases: ["r"],
 	async execute(message, args) {
 		const queue = message.guild?.queue;
 		if (!queue) return;
