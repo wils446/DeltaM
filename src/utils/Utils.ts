@@ -1,7 +1,11 @@
 import { RepeatMode, Song } from "discord-music-player";
 import { MessageEmbed } from "discord.js";
 
-export const getEmbedFromSong = (song: Song, progressBar?: string): MessageEmbed => {
+export const getEmbedFromSong = (
+	song: Song,
+	changeSongMessage = false,
+	progressBar?: string
+): MessageEmbed => {
 	const fields = [{ name: "Duration", value: song.duration }];
 	if (progressBar) fields.unshift({ name: "Length", value: progressBar });
 
@@ -10,6 +14,7 @@ export const getEmbedFromSong = (song: Song, progressBar?: string): MessageEmbed
 	if (song.requestedBy) descriptions.push(`Requested by <@!${song.requestedBy.id}>`);
 
 	return new MessageEmbed({
+		author: { name: changeSongMessage ? "Now Playing" : "" },
 		title: song.name,
 		description: descriptions.join("\r\n"),
 		url: song.url,
