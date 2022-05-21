@@ -12,7 +12,7 @@ const command: Command = {
 		if (!song) return;
 
 		message.reply({
-			embeds: [getEmbedFromSong(song, queue.createProgressBar().prettier)],
+			embeds: [getEmbedFromSong(song, false, queue.createProgressBar().prettier)],
 			allowedMentions: { repliedUser: false },
 		});
 	},
