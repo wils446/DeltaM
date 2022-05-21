@@ -12,7 +12,7 @@ const command: Command = {
 
 		const song = queue.songs[1];
 		await message.reply({
-			embeds: [getEmbedMessage(`Skipped ${queue.songs[0].name}`)],
+			embeds: [getEmbedMessage(`**Skipped ${queue.songs[0].name}**`)],
 			allowedMentions: {
 				repliedUser: false,
 			},
