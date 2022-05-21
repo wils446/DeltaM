@@ -1,5 +1,5 @@
 import { Player as DefaultPlayer, PlayerOptions } from "discord-music-player";
-import { Client as DiscordClient, Collection, Snowflake, TextBasedChannel } from "discord.js";
+import { Client as DiscordClient, Collection, Snowflake, TextChannel } from "discord.js";
 import Queue from "./Queue";
 
 class Player extends DefaultPlayer {
@@ -11,7 +11,7 @@ class Player extends DefaultPlayer {
 
 	createQueue(
 		guildId: Snowflake,
-		options: PlayerOptions & { channel?: TextBasedChannel } = this.options
+		options: PlayerOptions & { channel?: TextChannel } = this.options
 	): Queue {
 		options = Object.assign({} as PlayerOptions, this.options, options);
 

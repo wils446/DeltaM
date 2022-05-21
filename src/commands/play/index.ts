@@ -1,5 +1,5 @@
 import { RawSong, Song, Utils } from "discord-music-player";
-import { Command } from "discord.js";
+import { Command, TextChannel } from "discord.js";
 import { Client, LiveVideo } from "youtubei";
 import { getEmbedFromSong, getEmbedMessage } from "../../utils/Utils";
 
@@ -11,12 +11,12 @@ const command: Command = {
 		if (!message.member?.voice.channel || !message.guild) return;
 
 		const queue = message.client.player.createQueue(message.guild.id, {
-			channel: message.channel,
+			channel: message.channel as TextChannel,
 		});
 		await queue.join(message.member.voice.channel);
 
 		const query = args.join(" ");
-		queue.channel = message.channel;
+		queue.channel = message.channel as TextChannel;
 
 		const youtube = new Client();
 
