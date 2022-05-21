@@ -1,18 +1,24 @@
 import { Player, PlayerOptions, Queue as DefaultQueue, Song, Utils } from "discord-music-player";
 import { Client as Youtube, VideoCompact } from "youtubei";
-import { Guild, TextBasedChannel } from "discord.js";
-import { getEmbedMessage } from "../utils/Utils";
+import { Guild, TextChannel } from "discord.js";
+import { getEmbedFromSong } from "../utils/Utils";
 
 class Queue extends DefaultQueue {
 	autoplay = false;
 	lastPlayedSongs: Song[] = [];
 	youtube: Youtube;
-	channel: TextBasedChannel;
+	channel: TextChannel;
 
-	constructor(channel: TextBasedChannel, player: Player, guild: Guild, options?: PlayerOptions) {
+	constructor(channel: TextChannel, player: Player, guild: Guild, options?: PlayerOptions) {
 		super(player, guild, options);
 		this.youtube = new Youtube();
 		this.channel = channel;
+
+		this.player.on("songChanged", (queue, newSong) => {
+			if (this.destroyed) return;
+			if (!this.channel) return;
+			this.channel.send({ embeds: [getEmbedFromSong(newSong, true)] });
+		});
 	}
 
 	setAutoPlay(value: boolean): void {
@@ -34,9 +40,6 @@ class Queue extends DefaultQueue {
 			this.lastPlayedSongs.push(song);
 			if (this.lastPlayedSongs.length > 5) this.lastPlayedSongs.shift();
 		}
-
-		const msg = `Now playing: **${song.name}**`;
-		this.channel.send({ embeds: [getEmbedMessage(msg)] });
 	}
 
 	private async autoPlay(): Promise<Song> {
