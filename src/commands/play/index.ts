@@ -31,8 +31,11 @@ const command: Command = {
 					});
 
 				if (playlist) {
-					const msg = "🎶 **Added ${playlist.songs.length} songs from ${playlist.name}**";
-					await message.reply({ embeds: [getEmbedMessage(msg)] });
+					const msg = `🎶 **Added ${playlist.songs.length} songs from ${playlist.name}**`;
+					await message.reply({
+						embeds: [getEmbedMessage(msg)],
+						allowedMentions: { repliedUser: false },
+					});
 				}
 			} else if (url.hostname.endsWith("youtu.be") || url.hostname.endsWith("youtube.com")) {
 				let id: string | null;
