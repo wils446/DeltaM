@@ -1,6 +1,6 @@
 import { Player, PlayerOptions, Queue as DefaultQueue, Song, Utils } from "discord-music-player";
 import { Client as Youtube, VideoCompact } from "youtubei";
-import { Guild, TextChannel } from "discord.js";
+import { Guild, Message, TextChannel } from "discord.js";
 import { getEmbedFromSong } from "../utils/Utils";
 
 class Queue extends DefaultQueue {
@@ -8,16 +8,23 @@ class Queue extends DefaultQueue {
 	lastPlayedSongs: Song[] = [];
 	youtube: Youtube;
 	channel: TextChannel;
+	message: Message | undefined;
 
 	constructor(channel: TextChannel, player: Player, guild: Guild, options?: PlayerOptions) {
 		super(player, guild, options);
 		this.youtube = new Youtube();
 		this.channel = channel;
 
-		this.player.on("songChanged", (queue, newSong) => {
+		this.player.on("songFirst", async (queue, song) => {
+			if (this.destroyed || !this.channel) return;
+			this.message = await this.channel.send({ embeds: [getEmbedFromSong(song, true)] });
+		});
+
+		this.player.on("songChanged", async (queue, newSong) => {
 			if (this.destroyed) return;
 			if (!this.channel) return;
-			this.channel.send({ embeds: [getEmbedFromSong(newSong, true)] });
+			if (this.message) this.message.delete();
+			this.message = await this.channel.send({ embeds: [getEmbedFromSong(newSong, true)] });
 		});
 	}
 
