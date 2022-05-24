@@ -1,6 +1,6 @@
 import { Player, PlayerOptions, Queue as DefaultQueue, Song, Utils } from "discord-music-player";
 import { Client as Youtube, VideoCompact } from "youtubei";
-import { Guild, Message, TextChannel } from "discord.js";
+import { Guild, Message, StageChannel, TextChannel, VoiceChannel } from "discord.js";
 import { getEmbedFromSong } from "../utils/Utils";
 
 class Queue extends DefaultQueue {
@@ -9,6 +9,7 @@ class Queue extends DefaultQueue {
 	youtube: Youtube;
 	channel: TextChannel;
 	message: Message | undefined;
+	voiceChannel: StageChannel | VoiceChannel | undefined;
 
 	constructor(channel: TextChannel, player: Player, guild: Guild, options?: PlayerOptions) {
 		super(player, guild, options);
@@ -16,20 +17,30 @@ class Queue extends DefaultQueue {
 		this.channel = channel;
 
 		this.player.on("songFirst", async (queue, song) => {
-			if (this.destroyed || !this.channel) return;
-			this.message = await this.channel.send({ embeds: [getEmbedFromSong(song, true)] });
+			const q = queue as Queue;
+
+			if (q.destroyed || !q.channel) return;
+
+			const channel = q.channel;
+			q.message = await channel.send({ embeds: [getEmbedFromSong(song, true)] });
 		});
 
 		this.player.on("songChanged", async (queue, newSong) => {
-			if (this.destroyed) return;
-			if (!this.channel) return;
-			if (this.message) this.message.delete();
-			this.message = await this.channel.send({ embeds: [getEmbedFromSong(newSong, true)] });
+			const q = queue as Queue;
+
+			if (q.destroyed || !q.channel) return;
+
+			const channel = q.channel;
+			q.message = await channel.send({ embeds: [getEmbedFromSong(newSong, true)] });
 		});
 	}
 
 	setAutoPlay(value: boolean): void {
 		this.autoplay = value;
+	}
+
+	setVoiceChannel(channel: StageChannel | VoiceChannel): void {
+		this.voiceChannel = channel;
 	}
 
 	get lastPlayed(): Song {
