@@ -15,24 +15,6 @@ class Queue extends DefaultQueue {
 		super(player, guild, options);
 		this.youtube = new Youtube();
 		this.channel = channel;
-
-		this.player.on("songFirst", async (queue, song) => {
-			const q = queue as Queue;
-
-			if (q.destroyed || !q.channel) return;
-
-			const channel = q.channel;
-			q.message = await channel.send({ embeds: [getEmbedFromSong(song, true)] });
-		});
-
-		this.player.on("songChanged", async (queue, newSong) => {
-			const q = queue as Queue;
-
-			if (q.destroyed || !q.channel) return;
-
-			const channel = q.channel;
-			q.message = await channel.send({ embeds: [getEmbedFromSong(newSong, true)] });
-		});
 	}
 
 	setAutoPlay(value: boolean): void {
