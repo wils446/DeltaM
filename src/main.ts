@@ -42,10 +42,6 @@ client.once("ready", () => {
 
 client.on("messageCreate", async (message) => {
 	if (!message.content.startsWith(PREFIX) || message.author.bot) return;
-	if (message.author.id !== "330231306137108480") {
-		await message.reply("bot are in development, use another bot fakyu 😎👍");
-		return;
-	}
 
 	const args = message.content.slice(PREFIX.length).split(/ +/);
 	const commandName = (args.shift() as string).toLowerCase();
