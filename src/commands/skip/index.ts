@@ -8,6 +8,11 @@ const command: Command = {
 		const queue = message.guild?.queue;
 		if (!queue) return;
 
+		if (message.member?.voice.channel?.id !== queue.voiceChannel?.id) {
+			await message.reply("Join dlu baru request :smirk:");
+			return;
+		}
+
 		if (!queue.nowPlaying) return message.reply("There is no song playing");
 
 		const song = queue.songs[1];

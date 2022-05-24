@@ -7,6 +7,11 @@ const command: Command = {
 		const queue = message.guild?.queue;
 		if (!queue) return;
 
+		if (message.member?.voice.channel?.id !== queue.voiceChannel?.id) {
+			await message.reply("Join dlu baru request :smirk:");
+			return;
+		}
+
 		queue.stop();
 
 		await message.react("🛑");

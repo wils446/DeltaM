@@ -13,12 +13,20 @@ const command: Command = {
 		const queue = message.client.player.createQueue(message.guild.id, {
 			channel: message.channel as TextChannel,
 		});
-		await queue.join(message.member.voice.channel);
+		if (!queue.voiceChannel) await queue.setVoiceChannel(message.member.voice.channel);
+		if (!queue.isPlaying) {
+			await queue.join(message.member.voice.channel);
+		}
 
 		const query = args.join(" ");
 		queue.channel = message.channel as TextChannel;
 
 		const youtube = new Client();
+
+		if (message.member.voice.channel.id !== queue.voiceChannel?.id) {
+			await message.reply("Join dlu baru request :smirk:");
+			return;
+		}
 
 		try {
 			const url = new URL(query);

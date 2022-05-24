@@ -9,6 +9,11 @@ const command: Command = {
 		const queue = message.guild?.queue;
 		if (!queue) return;
 
+		if (message.member?.voice.channel?.id !== queue.voiceChannel?.id) {
+			await message.reply("Join dlu baru request :smirk:");
+			return;
+		}
+
 		if (queue.songs.length < 2)
 			return await message.reply({
 				embeds: [getEmbedMessage("There is no song in the queue to shuffle")],

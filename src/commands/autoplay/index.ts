@@ -8,6 +8,11 @@ const command: Command = {
 		const queue = message.guild?.queue;
 		if (!queue) return;
 
+		if (message.member?.voice.channel?.id !== queue.voiceChannel?.id) {
+			await message.reply("Join dlu baru request :smirk:");
+			return;
+		}
+
 		queue.setAutoPlay(!queue.autoplay);
 
 		const msg = `🎧 Autoplay is now ${queue.autoplay ? "enabled" : "disabled"}`;
