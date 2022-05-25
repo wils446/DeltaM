@@ -22,7 +22,6 @@ const player = new Player(client, {
 	leaveOnEmpty: false,
 	leaveOnStop: true,
 	deafenOnJoin: true,
-	timeout: 5000,
 });
 
 client.commands = [];
