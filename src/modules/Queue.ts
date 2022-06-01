@@ -14,7 +14,6 @@ class Queue extends DefaultQueue {
 		super(player, guild, options);
 		this.youtube = new Youtube();
 		this.channel = channel;
-		this.setVolume(200);
 	}
 
 	setAutoPlay(value: boolean): void {
