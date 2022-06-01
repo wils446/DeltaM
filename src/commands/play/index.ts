@@ -16,6 +16,7 @@ const command: Command = {
 		if (!queue.voiceChannel) await queue.setVoiceChannel(message.member.voice.channel);
 		if (!queue.isPlaying) {
 			await queue.join(message.member.voice.channel);
+			queue.setVolume(200);
 		}
 
 		const query = args.join(" ");
