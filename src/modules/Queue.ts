@@ -1,7 +1,6 @@
 import { Player, PlayerOptions, Queue as DefaultQueue, Song, Utils } from "discord-music-player";
 import { Client as Youtube, VideoCompact } from "youtubei";
 import { Guild, Message, StageChannel, TextChannel, VoiceChannel } from "discord.js";
-import { getEmbedFromSong } from "../utils/Utils";
 
 class Queue extends DefaultQueue {
 	autoplay = false;
@@ -15,6 +14,7 @@ class Queue extends DefaultQueue {
 		super(player, guild, options);
 		this.youtube = new Youtube();
 		this.channel = channel;
+		this.setVolume(200);
 	}
 
 	setAutoPlay(value: boolean): void {
