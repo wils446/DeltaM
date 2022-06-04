@@ -81,6 +81,21 @@ const command: Command = {
 						allowedMentions: { repliedUser: false },
 					});
 				}
+			} else if (url.hostname.endsWith("spotify.com")) {
+				const playlist = await queue
+					.playlist(query, { requestedBy: message.author })
+					.catch((err) => {
+						message.channel.send("Something went wrong: " + err);
+						queue.stop();
+					});
+
+				if (playlist) {
+					const msg = `🎶 **Added ${playlist.songs.length} songs from ${playlist.name}**`;
+					await message.reply({
+						embeds: [getEmbedMessage(msg)],
+						allowedMentions: { repliedUser: false },
+					});
+				}
 			}
 		} catch (err) {
 			const item = await youtube.findOne(query, { type: "video" });
