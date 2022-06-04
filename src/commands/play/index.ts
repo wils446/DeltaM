@@ -81,7 +81,7 @@ const command: Command = {
 						allowedMentions: { repliedUser: false },
 					});
 				}
-			} else if (url.hostname.endsWith("spotify.com")) {
+			} else if (url.hostname.endsWith("spotify.com") && url.pathname.startsWith("/playlist")) {
 				const playlist = await queue
 					.playlist(query, { requestedBy: message.author })
 					.catch((err) => {
