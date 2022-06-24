@@ -1,10 +1,9 @@
 import { Command, MessageEmbed, MessageActionRow, MessageButton, TextChannel } from "discord.js";
-import type { IButtonInteractionMeta } from "./interface";
 import { Client, LiveVideo } from "youtubei";
 import { RawSong, Song, Utils } from "discord-music-player";
 import { getEmbedFromSong } from "../../utils/Utils";
 
-const command: Command<IButtonInteractionMeta> = {
+const command: Command = {
 	name: "search",
 	description: "to search songs",
 	buttonInteractionIdPrefix: "search",
