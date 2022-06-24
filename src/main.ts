@@ -61,4 +61,20 @@ client.on("messageCreate", async (message) => {
 	}
 });
 
+client.on("interactionCreate", async (interaction) => {
+	if (!interaction.isButton()) return;
+	const commands = [...client.commands.values()];
+	const customId = interaction.customId;
+	const prefixId = interaction.customId.split("/").shift();
+
+	const command = commands.find((command) => command.buttonInteractionIdPrefix === prefixId);
+	if (!command?.buttonInteraction) return;
+
+	try {
+		await command.buttonInteraction(interaction);
+	} catch (err) {
+		await interaction.channel?.send(`Failed to execute the command : ${(err as Error).message}`);
+	}
+});
+
 client.login(TOKEN);
