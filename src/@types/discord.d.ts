@@ -22,9 +22,6 @@ declare module "discord.js" {
 		buttonInteractionIdPrefix?: string;
 		buttonInteractionIdParser?: (id: string) => ButtonInteractionMeta;
 		buttonInteractionIdArgs?: string[];
-		buttonInteraction?: (
-			interaction: ButtonInteraction,
-			meta: ButtonInteractionMeta extends unknown ? unknown : ButtonInteractionMeta
-		) => Promise<unknown>;
+		buttonInteraction?: (interaction: ButtonInteraction) => Promise<unknown>;
 	}
 }
