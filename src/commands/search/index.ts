@@ -1,7 +1,6 @@
 import { Command, MessageEmbed, MessageActionRow, MessageButton, TextChannel } from "discord.js";
-import { Client, LiveVideo } from "youtubei";
-import { RawSong, Song, Utils } from "discord-music-player";
-import { getEmbedFromSong } from "../../utils/Utils";
+import { Client } from "youtubei";
+import { playSong } from "../../utils/Utils";
 
 const command: Command = {
 	name: "search",
@@ -30,7 +29,7 @@ const command: Command = {
 
 		const buttons = result.map((video, index) =>
 			new MessageButton()
-				.setLabel(`${index + 1}. ${video.title}`)
+				.setLabel(`${index + 1}. ${video.title.substring(0, 30)}...`)
 				.setStyle("SUCCESS")
 				.setCustomId(`${this.buttonInteractionIdPrefix}/${video.id}`)
 		);
@@ -62,38 +61,9 @@ const command: Command = {
 			queue.setVolume(200);
 		}
 
-		const youtube = new Client();
 		const videoId = interaction.customId.split("/").pop() as string;
 
-		const video = await youtube.getVideo(videoId);
-		if (!video) throw new Error("❌ **No video found**");
-
-		const addedSong = new Song(
-			{
-				name: video.title,
-				url: "https://www.youtube.com/watch?v=" + videoId,
-				duration: Utils.msToTime(("duration" in video ? video.duration : 0) * 1000),
-				author: video.channel.name,
-				isLive: video instanceof LiveVideo,
-				thumbnail: video.thumbnails.best,
-			} as RawSong,
-			queue,
-			interaction.user
-		);
-
-		const song = await queue.play(addedSong, { requestedBy: interaction.user }).catch((err) => {
-			interaction.channel?.send("Something went wrong: " + err);
-			queue.stop();
-		});
-
-		if (song && queue.songs.length >= 1) {
-			const msg = `🎶 **Added ${song.name}**`;
-			await interaction.reply({
-				content: msg,
-				embeds: [getEmbedFromSong(song)],
-				allowedMentions: { repliedUser: false },
-			});
-		}
+		await playSong(videoId, queue, interaction.user, interaction, "id");
 	},
 };
 
