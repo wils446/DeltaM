@@ -1,0 +1,21 @@
+{
+	"name": "deltamusic",
+	"version": "1.0.0",
+	"main": "dist/main.js",
+	"scripts": {
+		"start": "node .",
+		"build": "tsc",
+		"dev": "tsc-watch --onSuccess \"node .\""
+	},
+	"repository": "https://github.com/wils446/DeltaM",
+	"author": "wils446 <wilsonlimmmm@gmail.com>",
+	"license": "MIT",
+	"dependencies": {
+		"discord-music-player": "^8.3.2",
+		"discord.js": "^13.8.1",
+		"dotenv": "^16.0.1",
+		"tsc-watch": "^5.0.3",
+		"typescript": "^4.7.4",
+		"youtubei": "^0.0.1-rc.36"
+	}
+}
