@@ -29,6 +29,12 @@ class Utils {
 			color: "GREEN",
 		});
 	}
+
+	static getRepeatStateMessage(state: RepeatMode) {
+		if (state === RepeatMode.SONG) return "🔂 **Looping Song**";
+		if (state === RepeatMode.QUEUE) return "🔁 **Looping Queue**";
+		return "**Loop disabled**";
+	}
 }
 
 export default Utils;
