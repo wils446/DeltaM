@@ -1,4 +1,4 @@
-import { Queue } from "discord-music-player";
+import Queue from "../modules/Queue";
 import "discord.js";
 import Player from "../modules/Player";
 
@@ -17,6 +17,7 @@ declare module "discord.js" {
 		name: string;
 		description: string;
 		aliases?: string[];
+		buttonInteractionIdPrefix?: string;
 		execute: (message: Message, args: string[]) => Promise<unknown>;
 	}
 
