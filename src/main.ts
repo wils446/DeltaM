@@ -1,6 +1,8 @@
-import { Client, Intents } from "discord.js";
+import { Client, ICommand, IInteraction, Intents } from "discord.js";
 import dotenv from "dotenv";
-import fs from "fs";
+import Player from "./modules/Player";
+import { OnMessageHandler, OnInteractionHandler } from "./handlers";
+import { getCommands } from "./utils/getCommands";
 
 dotenv.config({ path: ".env" });
 
@@ -17,34 +19,26 @@ const client = new Client({
 });
 
 client.commands = [];
+client.interactionCommands = [];
+client.player = new Player(client, {
+	leaveOnEnd: false,
+	leaveOnEmpty: false,
+	leaveOnStop: true,
+	deafenOnJoin: true,
+});
 
-const commandFiles = fs.readdirSync("./src/commands");
-for (const file of commandFiles) {
-	const { default: command } = require(`./commands/${file}`);
-	client.commands.push(command);
-}
+client.commands = getCommands("message") as ICommand[];
+client.interactionCommands = getCommands("interaction") as IInteraction[];
 
 client.once("ready", () => {
 	console.log("Ready!");
+	client.user?.setActivity("to the moon", { type: "LISTENING" });
 });
 
-client.on("messageCreate", async (message) => {
-	if (message.author.bot || !message.cleanContent.startsWith(PREFIX)) return;
+const onMessageHandler = new OnMessageHandler(client.commands, PREFIX);
+const onInteractionHandler = new OnInteractionHandler(client.interactionCommands);
 
-	const args = message.cleanContent.slice(PREFIX.length).split(/ +/);
-	const commandName = (args.shift() as string).toLowerCase();
-
-	const command = client.commands.find((cmd) => cmd.name === commandName || cmd.aliases?.includes(commandName));
-	if (!command || !message.guild) return;
-
-	try {
-		const queue = client.player.getQueue(message.guild.id);
-		message.guild.queue = queue;
-
-		await command.execute(message, args);
-	} catch (err) {
-		await message.reply(`Failed to executethe command : ${(err as Error).message}`);
-	}
-});
+client.on("messageCreate", async (message) => onMessageHandler.execute(message));
+client.on("interactionCreate", async (interaction) => onInteractionHandler.execute(interaction));
 
 client.login(TOKEN);
