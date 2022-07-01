@@ -4,8 +4,8 @@ import Player from "../modules/Player";
 
 declare module "discord.js" {
 	export interface Client {
-		command: ICommand[];
-		interactionCommand: IInteraction[];
+		commands: ICommand[];
+		interactionCommands: IInteraction[];
 		player: Player;
 	}
 
@@ -22,8 +22,8 @@ declare module "discord.js" {
 	}
 
 	export interface IInteraction {
-		buttonInteraction: IButtonInteraction;
-		slashCommandInteraction: ISlashCommandInteraction;
+		buttonInteraction?: IButtonInteraction;
+		slashCommandInteraction?: ISlashCommandInteraction;
 	}
 
 	export interface IButtonInteraction {
