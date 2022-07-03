@@ -3,6 +3,7 @@ import { ButtonInteraction, Message, User } from "discord.js";
 import { Client, LiveVideo } from "youtubei";
 import Utils from "./Utils";
 import Queue from "../modules/Queue";
+import { updateUserHistory } from "./updateUserHistory";
 
 export const playSong = async (
 	query: string,
@@ -37,6 +38,7 @@ export const playSong = async (
 		});
 
 		if (song && queue.songs.length >= 1) {
+			await updateUserHistory(user.id, addedSong);
 			const msg = `🎶 **Added ${song.name}**`;
 			await message.reply({
 				content: msg,
@@ -54,6 +56,19 @@ export const playSong = async (
 				});
 
 				if (playlist) {
+					await Promise.all([
+						...playlist.songs.map(
+							async (song) =>
+								await updateUserHistory(user.id, {
+									name: song.name,
+									url: song.url,
+									duration: song.duration,
+									author: song.author,
+									isLive: song.isLive,
+									thumbnail: song.thumbnail,
+								})
+						),
+					]);
 					const msg = `🎶 **Added ${playlist.songs.length} songs from ${playlist.name}**`;
 					await message.reply({
 						embeds: [Utils.getEmbedMessage(msg)],
@@ -69,18 +84,16 @@ export const playSong = async (
 				const video = await youtube.getVideo(id);
 				if (!video) throw new Error("❌ **No video found**");
 
-				const addedSong = new Song(
-					{
-						name: video.title,
-						url: "https://www.youtube.com/watch?v=" + video.id,
-						duration: DMPUtils.msToTime(("duration" in video ? video.duration : 0) * 1000),
-						author: video.channel.name,
-						isLive: video instanceof LiveVideo,
-						thumbnail: video.thumbnails.best,
-					} as RawSong,
-					queue,
-					user
-				);
+				const rawSong = {
+					name: video.title,
+					url: "https://www.youtube.com/watch?v=" + video.id,
+					duration: DMPUtils.msToTime(("duration" in video ? video.duration : 0) * 1000),
+					author: video.channel.name,
+					isLive: video instanceof LiveVideo,
+					thumbnail: video.thumbnails.best,
+				} as RawSong;
+
+				const addedSong = new Song(rawSong, queue, user);
 
 				const song = await queue.play(addedSong, { requestedBy: user }).catch((err) => {
 					message.channel?.send("Something went wrong: " + err);
@@ -88,6 +101,7 @@ export const playSong = async (
 				});
 
 				if (song && queue.songs.length >= 1) {
+					await updateUserHistory(user.id, rawSong);
 					const msg = `🎶 **Added ${song.name}**`;
 					await message.reply({
 						content: msg,
@@ -102,6 +116,19 @@ export const playSong = async (
 				});
 
 				if (playlist) {
+					await Promise.all([
+						...playlist.songs.map(
+							async (song) =>
+								await updateUserHistory(user.id, {
+									name: song.name,
+									url: song.url,
+									duration: song.duration,
+									author: song.author,
+									isLive: song.isLive,
+									thumbnail: song.thumbnail,
+								})
+						),
+					]);
 					const msg = `🎶 **Added ${playlist.songs.length} songs from ${playlist.name}**`;
 					await message.reply({
 						embeds: [Utils.getEmbedMessage(msg)],
@@ -113,18 +140,16 @@ export const playSong = async (
 			const item = await youtube.findOne(query, { type: "video" });
 			if (!item) throw new Error("❌ **No video found**");
 
-			const addedSong = new Song(
-				{
-					name: item.title,
-					url: "http://www.youtube.com/watch?v=" + item.id,
-					duration: DMPUtils.msToTime((item.duration || 0) * 1000),
-					author: item.channel?.name,
-					isLive: item.isLive,
-					thumbnail: item.thumbnails.best,
-				} as RawSong,
-				queue,
-				user
-			);
+			const rawSong: RawSong = {
+				name: item.title,
+				url: "http://www.youtube.com/watch?v=" + item.id,
+				duration: DMPUtils.msToTime((item.duration || 0) * 1000),
+				author: item.channel!.name,
+				isLive: item.isLive,
+				thumbnail: item.thumbnails.best,
+			} as RawSong;
+
+			const addedSong = new Song(rawSong, queue, user);
 
 			const song = await queue.play(addedSong, { requestedBy: user }).catch((err) => {
 				message.channel?.send("Something went wrong: " + err);
@@ -132,6 +157,7 @@ export const playSong = async (
 			});
 
 			if (song && queue.songs.length >= 1) {
+				await updateUserHistory(user.id, rawSong);
 				const msg = `🎶 **Added ${song.name}**`;
 				await message.reply({
 					content: msg,
