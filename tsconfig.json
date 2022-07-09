@@ -16,7 +16,8 @@
 			"es5",
 			"es6",
 			"dom",
-			"dom.iterable"
+			"dom.iterable",
+			"ES2021"
 		] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
 		// "jsx": "preserve",                                /* Specify what JSX code is generated. */
 		// "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
@@ -102,5 +103,6 @@
 		// "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
-	"exclude": ["/dist/"] /* Exclude the dist folder from the build. */
+	"include": ["src/**/*"],
+	"exclude": ["src/data/userHistory.json"] /* Exclude the dist folder from the build. */
 }
