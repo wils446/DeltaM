@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "dist/main.js",
 	"scripts": {
-		"start": "node .",
+		"start": "nodemon -x --ignore './src/data/userHistory.json'",
 		"build": "tsc",
 		"dev": "tsc-watch --onSuccess \"node .\""
 	},
@@ -11,10 +11,15 @@
 	"author": "wils446 <wilsonlimmmm@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
+		"@types/qs": "^6.9.7",
+		"cheerio": "^1.0.0-rc.12",
 		"discord-music-player": "^8.3.2",
 		"discord.js": "^13.8.1",
 		"dotenv": "^16.0.1",
+		"node-fetch": "2",
+		"nodemon": "^2.0.19",
 		"octokit": "^1.8.1",
+		"qs": "^6.11.0",
 		"tsc-watch": "^5.0.3",
 		"typescript": "^4.7.4",
 		"youtubei": "^0.0.1-rc.36"
