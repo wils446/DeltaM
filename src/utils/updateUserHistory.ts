@@ -4,13 +4,11 @@ import fs from "fs";
 
 export const updateUserHistory = async (userId: string, rawSong: RawSong) => {
 	const { default: history }: { default: IUserHistory } = await import("../data/userHistory.json");
-	console.log(rawSong.url.split("://").shift());
 
 	let { url } = rawSong;
 	if (url.startsWith("http://www.")) {
 		url = `https://${url.slice(11)}`;
 	}
-	console.log(url);
 
 	let user = history.users.find((user) => user.id === userId);
 	if (!user) {
